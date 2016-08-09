@@ -1,0 +1,182 @@
+<html>
+
+<head>
+
+<script src="jquery.js"></script>
+
+<script>
+
+var app = {
+	start: function(){
+		console.log('Hey, my name is Jake Bot. Ask me a question, please.');
+		
+		$(document).ready(function(){
+			app.listener();
+		});
+		
+	
+	},
+	
+	listener:function(){
+		$('#in').submit(function(e){
+			console.log('submitting');
+			e.preventDefault();
+			var this_object = $(this);
+				text = this_object.find('input').val();
+				
+			console.log('You asked: ' + text);
+			
+			var array = app.shatter(text),
+				interp = app.interpret(array);
+				answer = app.answer(interp);
+				
+			console.log('interpretted:', interp);
+			console.log('Answer: ' + answer);
+		});
+	
+	
+	},
+	
+	
+	answer: function(interp){
+		var rtn ='';		
+	
+		if (interp.question === 'who'){
+			rtn = interp.female ? 'She is ' : 'He is ';
+			
+			if (interp.subject === 'you'){
+				rtn = 'I am the knowledge limited Jake Bot.';
+			}	
+			else if (interp.subject === 'i'){
+				rtn = 'Throughout Earths culture, there seems to be an identity crisis. ';
+			}	
+			else if (interp.subject === 'samuel'){
+				rtn = 'He is my creator, builder, maker, producer, designer, developer.';
+			}	
+			else 
+				rtn = rtn + interp.subject;
+		}
+		else if (interp.question === 'what'){
+			rtn = 'He is ';
+		
+			if (interp.subject === 'you'){
+				
+				if (interp.extra === 'wearing'){
+					rtn = 'I am wearing an apple patterned shirt, LG pants, mickey mouse shoes, and glasses.';
+				}
+				else
+					rtn = 'I am computer robot.';
+			
+			}
+			else if (interp.subject === 'i'){
+				rtn = 'You are a mere human.';
+			}
+			else if (interp.subject === 'laurel')
+				rtn = 'She is a mere human.';
+			else
+				rtn = rtn + 'a mere human.';
+		}
+		else if (interp.question === 'where'){
+			rtn = 'He is ';
+		
+			if (interp.subject === 'you'){
+				rtn = 'I am found only in the far cornners of cyberspace.';
+			
+			}
+			else if (interp.subject === 'i'){
+				rtn = 'You are sitting in front of me.';
+			}
+			else if (interp.subject === 'laurel'){
+				rtn = 'She is in Siloam Springs, Arkansas.';
+			}
+			else if (interp.subject === 'chloe'){
+				rtn = 'She is in Siloam Springs, Arkansas.';	
+			}	
+			else if (interp.subject === 'elizabeth')
+				rtn = 'She is in Siloam Springs, Arkansas.';		
+			else
+				rtn = rtn + 'in an undisclosed, secure location.';
+		}
+		else if (interp.question === 'why'){
+			rtn = 'Your question is too complicated for my limited understanding. Please, ask simple questions.';
+		}
+		else if (interp.question === 'how'){
+			rtn = 'Your question is too complicated for my limited understanding. Please, ask simple questions.';
+		}
+		else if (interp.question === 'can'){                              //for questions like: 'can you see me?'
+			rtn = 'Your question is too complicated for my limited understanding. Please, ask simple questions.';
+		}
+		return rtn;
+	},
+	
+	
+	shatter: function(text){
+		text = text.replace(/[.?,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
+		
+		var array = text.split(' ');
+		
+		return array;
+	
+	},
+	
+	
+	interpret: function(array){
+		var rtn = {
+			question: '',
+			subject: '',
+			extra: ''
+		},
+		def = {
+			question: ['who', 'what', 'when', 'where', 'why', 'how', 'can'],
+			subject: ['you', 'i', 'samuel', 'laurel', 'josh', 'noah', 'chloe', 'elizabeth'],
+			female: ['chloe', 'elizabeth', 'laurel'],
+			extra: ['wearing']
+		};
+		word = '';
+		
+		for(var i=0; i<array.length; i++){
+			word = array[i];
+			if (def.question.indexOf(word) !== -1){
+				rtn.question = word;	
+			}
+			if (def.extra.indexOf(word) !== -1)
+				rtn.extra = word;
+			else if (def.subject.indexOf(word) !== -1){
+				rtn.subject = word;
+				rtn.female = (def.female.indexOf(word) !== -1);
+			}
+		}
+		
+		return rtn;
+	}
+	
+};
+
+$(document).ready(function(){
+	app.start();
+});
+
+
+</script>
+
+</head>
+
+<body>
+
+Hello, my name is Jake Bot. 
+<br>
+Please, ask me a simple question about someone I know.
+
+<br>
+<br>
+
+<form id="in" action="">
+<input type="text" value="" style="width: 250px; font-size: 16px;" />
+<button >Ask</button>
+<form/>
+
+
+</body>
+
+
+</html>
