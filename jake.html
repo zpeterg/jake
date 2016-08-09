@@ -2,7 +2,7 @@
 
 <head>
 
-<script src="jquery.js"></script>
+<script src="jquery-2.2.0.min.js"></script>
 
 <script>
 
@@ -19,7 +19,6 @@ var app = {
 	
 	listener:function(){
 		$('#in').submit(function(e){
-			console.log('submitting');
 			e.preventDefault();
 			var this_object = $(this);
 				text = this_object.find('input').val();
@@ -57,7 +56,7 @@ var app = {
 				rtn = rtn + interp.subject;
 		}
 		else if (interp.question === 'what'){
-			rtn = 'He is ';
+			rtn = interp.female ? 'She is ' : 'He is ';
 		
 			if (interp.subject === 'you'){
 				
@@ -65,19 +64,21 @@ var app = {
 					rtn = 'I am wearing an apple patterned shirt, LG pants, mickey mouse shoes, and glasses.';
 				}
 				else
-					rtn = 'I am computer robot.';
+					rtn = 'I am a computer robot.';
 			
 			}
 			else if (interp.subject === 'i'){
 				rtn = 'You are a mere human.';
 			}
-			else if (interp.subject === 'laurel')
-				rtn = 'She is a mere human.';
-			else
-				rtn = rtn + 'a mere human.';
+			else 
+				if (interp.extra === 'wearing'){
+					rtn = rtn + 'wearing clothes.';
+				}
+				else
+					rtn = rtn + 'a mere human.';
 		}
-		else if (interp.question === 'where'){
-			rtn = 'He is ';
+		if (interp.question === 'where'){
+			rtn = interp.female ? 'She is ' : 'He is ';
 		
 			if (interp.subject === 'you'){
 				rtn = 'I am found only in the far cornners of cyberspace.';
@@ -85,15 +86,7 @@ var app = {
 			}
 			else if (interp.subject === 'i'){
 				rtn = 'You are sitting in front of me.';
-			}
-			else if (interp.subject === 'laurel'){
-				rtn = 'She is in Siloam Springs, Arkansas.';
-			}
-			else if (interp.subject === 'chloe'){
-				rtn = 'She is in Siloam Springs, Arkansas.';	
-			}	
-			else if (interp.subject === 'elizabeth')
-				rtn = 'She is in Siloam Springs, Arkansas.';		
+			}		
 			else
 				rtn = rtn + 'in an undisclosed, secure location.';
 		}
@@ -106,6 +99,7 @@ var app = {
 		else if (interp.question === 'can'){                              //for questions like: 'can you see me?'
 			rtn = 'Your question is too complicated for my limited understanding. Please, ask simple questions.';
 		}
+		
 		return rtn;
 	},
 	
@@ -143,8 +137,8 @@ var app = {
 				rtn.extra = word;
 			else if (def.subject.indexOf(word) !== -1){
 				rtn.subject = word;
-				rtn.female = (def.female.indexOf(word) !== -1);
-			}
+				rtn.female = (def.female.indexOf(word) !== -1)
+			}	
 		}
 		
 		return rtn;
@@ -152,10 +146,7 @@ var app = {
 	
 };
 
-$(document).ready(function(){
-	app.start();
-});
-
+app.start();
 
 </script>
 
